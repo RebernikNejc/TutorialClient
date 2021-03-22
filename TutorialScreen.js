@@ -20,25 +20,17 @@ const TutorialScreen = ({navigation, route}) => {
       fetch("https://tutorial-guide.herokuapp.com/v1/tutorial/" + route.params.tutorialId + "/page/" + route.params.pageNumber)
       .then((response) => response.json())
       .then((json) => {
-        // console.log(json);
         setData(json);
       })
       .catch((error) => console.log(error))
       .finally(() => {
         setIsLoading(false);
-        popover();
+        setShowPopover(true);
       });
     }, []);
   
-    const popover = () => {
-      loaded--;
-      if (loaded == 0) {
-        setShowPopover(true);
-      }
-    }
-  
     return (
-      <View style={{flex: 1, flexDirection: "column", alignItems: "center", justifyContent: "center"}}>
+      <SafeAreaView style={{flex: 1, flexDirection: "column", alignItems: "center", justifyContent: "center"}}>
         {isLoading ? <View></View> : (
           data.hintsById.length == 0 ? <View></View> : (
             <Popover  popoverStyle={{padding: 10}}
@@ -47,12 +39,21 @@ const TutorialScreen = ({navigation, route}) => {
                                     0,
                                     0)}
                       isVisible={showPopover}
-                      onRequestClose={() => setShowPopover(false)} onCloseComplete={() => {
-                        if (index < data.hintsById.length - 1) {
-                          setIndex(index + 1);
-                          setTimeout(() => setShowPopover(true), 0);
-                        }
-                      }}
+        onRequestClose={() => {
+            console.log("closing");
+            setShowPopover(false);
+        }}
+        onCloseStart={() => {
+           console.log("closing start");
+            if (index < data.hintsById.length - 1) {
+                console.log("inside next slide");
+              
+                setTimeout(() => {
+                    setIndex(index + 1);
+                    setShowPopover(true);
+                }, 1000);
+            }
+        }}
                       placement={"bottom"}>
               <View style={{flex: 1, justifyContent: "center", alignItems: "center"}}>
                 <Text>{data.hintsById[index].content}</Text>
@@ -64,7 +65,7 @@ const TutorialScreen = ({navigation, route}) => {
         )}
         
         <View style={{width: "100%", flexDirection: "row", justifyContent: "center"}}>
-          <Image source={{uri: data.image}} style={{width: imageWidth, height: imageHeight}} onLoadEnd={() => popover()} />
+          <Image source={{uri: data.image}} style={{width: imageWidth, height: imageHeight}} />
         </View>
   
         <View style={{flex: 1, alignItems: "center", justifyContent: "center"}}>
@@ -78,7 +79,7 @@ const TutorialScreen = ({navigation, route}) => {
             pageNumber: route.params.pageNumber + 1
           }) : navigation.popToTop()}} />}
         </View>
-      </View>
+      </SafeAreaView>
     );
 }
 

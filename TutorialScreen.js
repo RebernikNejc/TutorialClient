@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Button, Image, Dimensions, SafeAreaView, Platform, StatusBar } from 'react-native';
+import { View, Text, Image, Dimensions, SafeAreaView, Button } from 'react-native';
 import Popover, { Rect } from 'react-native-popover-view';
 import { useHeaderHeight } from '@react-navigation/stack';
 
@@ -8,6 +8,7 @@ const TutorialScreen = ({navigation, route}) => {
     const [data, setData] = useState({});
     const [showPopover, setShowPopover] = useState(false);
     const [index, setIndex] = useState(0);
+    const [direction, setDirection] = useState(1);
   
     const wWidth = Dimensions.get("window").width;
     const wHeight = Dimensions.get("window").height;
@@ -44,20 +45,28 @@ const TutorialScreen = ({navigation, route}) => {
             setShowPopover(false);
         }}
         onCloseStart={() => {
-           console.log("closing start");
-            if (index < data.hintsById.length - 1) {
-                console.log("inside next slide");
-              
-                setTimeout(() => {
-                    setIndex(index + 1);
-                    setShowPopover(true);
-                }, 1000);
-            }
+          console.log("closing start");
+          if (index == 0 && direction == -1 || index == data.hintsById.length - 1 && direction == 1)
+            return;
+          setTimeout(() => {
+            setIndex(index + direction);
+            setShowPopover(true);
+          }, 700);
         }}
                       placement={"bottom"}>
               <View style={{flex: 1, justifyContent: "center", alignItems: "center"}}>
                 <Text>{data.hintsById[index].content}</Text>
-                <Button title={index < data.hintsById.length - 1 ? "Naprej" : "OK"} onPress={() => setShowPopover(false)} />
+                <View style={{flexDirection: "row"}}>
+                  <Button title="Nazaj" type="clear" onPress={() => {
+                    setDirection(-1);
+                    setShowPopover(false);
+                  }} />
+                  <Button title="Naprej" onPress={() => {
+                    setDirection(1);
+                    setShowPopover(false);
+                  }} />
+                </View>
+                
               </View>
               
             </Popover>

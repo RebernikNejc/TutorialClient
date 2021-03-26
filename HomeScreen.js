@@ -10,6 +10,8 @@ const HomeScreen = ({navigation}) => {
           tutorialId: 1,
           pageNumber: 1
         })} />
+        <Button title="Form" onPress={() => navigation.navigate("Form")} />
+        <Button title="Edges" onPress={() => navigation.navigate("Edge")} />
       </View>
     );
 };

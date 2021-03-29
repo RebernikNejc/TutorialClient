@@ -46,12 +46,15 @@ const TutorialScreen = ({navigation, route}) => {
         }}
         onCloseStart={() => {
           console.log("closing start");
-          if (index == 0 && direction == -1 || index == data.hintsById.length - 1 && direction == 1)
+          if (direction == 0 || index == 0 && direction == -1 || index == data.hintsById.length - 1 && direction == 1)
             return;
           setTimeout(() => {
             setIndex(index + direction);
             setShowPopover(true);
           }, 700);
+        }}
+        onOpenStart={() => {
+          setDirection(0);
         }}
                       placement={"bottom"}>
               <View style={{flex: 1, justifyContent: "center", alignItems: "center"}}>

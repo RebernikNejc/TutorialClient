@@ -28,7 +28,7 @@ const EdgeScreen = ({navigation, route}) => {
   const [reference, setReference] = useState();
   const [data, setData] = useState(null);
   const [index, setIndex] = useState(0);
-  const [direction, setDirection] = useState(1);
+  const [direction, setDirection] = useState(0);
 
   useEffect(() => {
     fetch("https://tutorial-guide.herokuapp.com/v1/tutorial/3/page/1")
@@ -78,12 +78,15 @@ const EdgeScreen = ({navigation, route}) => {
             setShowPopover(false);
           }}
           onCloseStart={() => {
-            if (index == 0 && direction == -1 || index == data.hintsById.length - 1 && direction == 1)
+            if (direction == 0 || index == 0 && direction == -1 || index == data.hintsById.length - 1 && direction == 1)
               return;
             setTimeout(() => {
               setIndex(index + direction);
               setShowPopover(true);
             }, 700);
+          }}
+          onOpenStart={() => {
+            setDirection(0);
           }}
         >
           <Text>{data.hintsById[index].content}</Text>

@@ -1,7 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Button, View } from 'react-native';
-import { Input, Text } from 'react-native-elements';
+import { Input, Text, Button as ElementsButton } from 'react-native-elements';
 import Popover from 'react-native-popover-view';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 const FormScreen = ({navigation, route}) => {
   const ime = useRef();
@@ -62,7 +63,14 @@ const FormScreen = ({navigation, route}) => {
           setDirection(0);
         }}
       >
-        <Text>{data.hintsById[index].content}</Text>
+        <View style={{flexDirection: "row", justifyContent: "space-between"}}>
+            <Text>{data.hintsById[index].content}</Text>
+            <ElementsButton
+              icon={<Icon name="times" size={16}></Icon>}
+              type="clear" 
+              buttonStyle={{padding: 0, paddingLeft: 8}}
+              onPress={() => setShowPopover(false)} />
+          </View>
         <View style={{flexDirection: "row"}}>
           <Button
             title="Nazaj"

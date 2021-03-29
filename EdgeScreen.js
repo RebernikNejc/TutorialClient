@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { View, SafeAreaView, Button } from 'react-native';
-import { Text } from 'react-native-elements';
+import { Text, Button as ElementsButton } from 'react-native-elements';
 import Popover from 'react-native-popover-view';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
@@ -89,7 +89,15 @@ const EdgeScreen = ({navigation, route}) => {
             setDirection(0);
           }}
         >
-          <Text>{data.hintsById[index].content}</Text>
+          <View style={{flexDirection: "row", justifyContent: "space-between"}}>
+            <Text>{data.hintsById[index].content}</Text>
+            <ElementsButton
+              icon={<Icon name="times" size={16}></Icon>}
+              type="clear" 
+              buttonStyle={{padding: 0, paddingLeft: 8}}
+              onPress={() => setShowPopover(false)} />
+          </View>
+          
           <View style={{flexDirection: "row", justifyContent: "space-between"}}>
             <Button
               title="Nazaj"

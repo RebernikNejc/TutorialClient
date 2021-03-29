@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, Image, Dimensions, SafeAreaView, Button } from 'react-native';
 import Popover, { Rect } from 'react-native-popover-view';
 import { useHeaderHeight } from '@react-navigation/stack';
+import { Button as ElementsButton } from 'react-native-elements';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 const TutorialScreen = ({navigation, route}) => {
     const [isLoading, setIsLoading] = useState(true);
@@ -58,7 +60,14 @@ const TutorialScreen = ({navigation, route}) => {
         }}
                       placement={"bottom"}>
               <View style={{flex: 1, justifyContent: "center", alignItems: "center"}}>
-                <Text>{data.hintsById[index].content}</Text>
+                <View style={{flexDirection: "row", justifyContent: "space-between"}}>
+                  <Text>{data.hintsById[index].content}</Text>
+                  <ElementsButton
+                    icon={<Icon name="times" size={16}></Icon>}
+                    type="clear" 
+                    buttonStyle={{padding: 0, paddingLeft: 8}}
+                    onPress={() => setShowPopover(false)} />
+                </View>
                 <View style={{flexDirection: "row"}}>
                   <Button title="Nazaj" type="clear" onPress={() => {
                     setDirection(-1);
